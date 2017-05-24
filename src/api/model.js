@@ -2,16 +2,18 @@ import Vue from 'vue'
 
 export default {
 
-  authenticate(data) {
+  models(id) {
 
-    return Vue.http.post('oauth/token', data)
+    return Vue.http.get('api/admin/brands/' + id)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
 
-  user() {
-    return Vue.http.get('api/user')
+  create(data) {
+
+    return Vue.http.post('api/admin/models/', data)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   }
+
 }

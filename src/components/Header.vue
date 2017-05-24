@@ -11,12 +11,12 @@
             <router-link tag="li" to="/dashboard" class="nav-item px-3">
                 <a class="nav-link">Dashboard</a>
             </router-link>
-            <router-link tag="li" to="users" class="nav-item px-3">
+            <router-link tag="li" to="/users" class="nav-item px-3">
                 <a class="nav-link">Users</a>
             </router-link>
-            <li class="nav-item px-3">
-                <a class="nav-link" href="#">Settings</a>
-            </li>
+            <router-link tag="li" to="/brands" class="nav-item px-3">
+                <a class="nav-link" href="#">Brands</a>
+            </router-link>
         </ul>
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item d-md-down-none">
@@ -24,11 +24,10 @@
                         class="badge badge-pill badge-danger">5</span></a>
             </li>
 
-
             <dropdown size="nav" class="nav-item">
         <span slot="button">
-          <img src="static/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-          <span class="d-md-down-none">admin</span>
+          <img :src="user.cover_url" class="img-avatar" alt="admin@bootstrapmaster.com">
+          <span v-if="user" class="d-md-down-none">{{ user.fullname }}</span>
         </span>
                 <div slot="dropdown-menu" class="dropdown-menu dropdown-menu-right">
 
@@ -63,6 +62,11 @@
       navbar,
       dropdown
     },
+    computed: {
+      user () {
+        return this.$store.getters.user
+      }
+    },
     methods: {
       click () {
         // do nothing
@@ -83,6 +87,9 @@
         e.preventDefault()
         document.body.classList.toggle('aside-menu-hidden')
       }
+    },
+    created () {
+      this.$store.dispatch('getAuthUser')
     }
   }
 </script>

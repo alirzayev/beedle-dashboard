@@ -6,18 +6,31 @@ import App from './App'
 import router from './router'
 import store from './store'
 import VueResource from 'vue-resource'
+import VueTable from './components/VueTable.vue'
+import { default as swal } from 'sweetalert2'
 
 Vue.use(Vuex)
 Vue.use(VueResource)
-Vue.http.options.root = 'http://localhost:8000'
-Vue.http.headers.common['Authorization'] = 'Basic YXBpOnBhc3N3b3Jk'
+Vue.use(swal)
 
+Vue.component('vue-table', VueTable)
+
+Vue.http.options.root = 'http://localhost:8000'
+Vue.http.options.emulateJSON = true
 Vue.http.interceptors.push((request, next) => {
-  // modify headers
-  request.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token')
-  request.headers['Accept'] = 'application/json'
-  // continue to next interceptor
-  next()
+  request.headers.set('Authorization', 'Bearer ' + localStorage.getItem('token'))
+  request.headers.set('Accept', 'application/json')
+
+  next(function (response) {
+    // modify response
+    if (response.body.error === true) {
+      swal(
+        'Error Found!',
+        response.body.message,
+        'error'
+      )
+    }
+  })
 })
 
 router.beforeEach((to, from, next) => {
@@ -38,8 +51,9 @@ router.beforeEach((to, from, next) => {
 
 /* eslint-disable no-new */
 new Vue({
+  el: '#app',
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
+})
 

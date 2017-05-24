@@ -12970,3 +12970,8 @@ hr.transparent {
 *[dir="rtl"] .callout-success {
     border-right-color: #4dbd74;
 }
+
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}

@@ -3,13 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title>Admin Panel - Beedle</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.3/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.3/sweetalert2.min.css">
 
-    <!-- Icons -->
-    <link href="static/css/font-awesome.min.css" rel="stylesheet">
-    <link href="static/css/simple-line-icons.css" rel="stylesheet">
-
-    <!-- Main styles for this application -->
-    <link href="static/css/style.css" rel="stylesheet">
 </head>
 
 <!-- BODY options, add following classes to body to change options
@@ -37,5 +33,9 @@
 <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
 <div id="app"></div>
 <!-- built files will be auto injected -->
+
+<!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+
 </body>
 </html>

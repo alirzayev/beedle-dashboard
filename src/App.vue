@@ -7,3 +7,8 @@
     name: 'app'
   }
 </script>
+<style>
+    @import '../static/css/font-awesome.css';
+    @import '../static/css/simple-line-icons.css';
+    @import '../static/css/style.css';
+</style>

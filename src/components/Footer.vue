@@ -1,7 +1,6 @@
 <template>
     <footer class="app-footer">
-        <a href="http://caspiansoft.com">Caspian Soft</a> &copy; 2017
-    <span class="float-right">Developed by <a href="http://coreui.io">Caspian Soft</a></span>
+        <a href="http://caspiansoft.com">Beedle</a> &copy; 2017
     </footer>
 </template>
 <script>
