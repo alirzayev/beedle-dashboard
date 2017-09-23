@@ -12,7 +12,6 @@
 
 <script>
     /* eslint-disable padded-blocks,indent,key-spacing */
-
     export default {
       props: ['model']
     }

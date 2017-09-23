@@ -21,7 +21,6 @@
                                     <div class="col-6">
                                         <button type="button" class="btn btn-primary px-4" @click="addBrand">Add
 
-
                                         </button>
                                     </div>
                                 </div>

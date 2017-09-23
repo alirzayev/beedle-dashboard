@@ -7,108 +7,147 @@
                 <!-- SEARCH AREA  -->
                 <div class="float_right">
                     <label> Serarch
-                    <input type="text" v-model="search">
+                        <input type="text" v-model="search">
                     </label>
                 </div>
                 <!--/ SEARCH AREA  -->
             </div>
             <div class="card-block">
                 <table class="table table-striped">
-                    <thead class="text-center">
+                    <thead>
                     <tr v-if="columns">
                         <th> No </th>
-                        <th v-for="column in columns">{{ column }}</th>
+                        <th v-if="image_attr"> Cover </th>
+                        <th v-for="column in columns" v-text="column"></th>
                         <th> Actions </th>
                     </tr>
                     <tr v-else>
                         <th> No </th>
-                        <th v-for="field in fields">{{ field }}</th>
+                        <th v-if="image_attr"> Cover </th>
+                        <th v-for="field in fields" v-text="field"></th>
                         <th> Actions </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(items, index) in filteredItems">
+                    <tr v-for="(item, index) in getItems(page)">
                         <!-- In here we only display keys value of items which are initialized in 'fields' array -->
                         <td>{{ index + 1 }}</td>
-                        <td v-show="fields.includes(key)" v-for="(value, key) in items">
-                            {{ value }}
-
-
-
+                        <td v-if="image_attr">
+                            <div class="avatar">
+                                <img :src="item[image_attr]" class="img-avatar">
+                            </div>
+                        </td>
+                        <td v-if="item.hasOwnProperty(field)" v-for="field in fields">
+                            <span v-if="detail_column===field" class="link" @click="show(item.id)" v-text="item[field]">
+                            </span>
+                            <span v-else v-text="item[field]">
+                            </span>
+                        </td>
+                        <!-- This column is displaying the objects of item -->
+                        <td v-for="object in objects">
+                            <span v-if="item[object]" v-for="(value, key) in fields">
+                                {{ item[object][value] }}
+                            </span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-default" @click="editItem(items)">Edit</button>
-                            <button class="btn btn-sm btn-danger" @click="deleteItem(items.id, index)">Delete</button>
+                            <button class="btn btn-sm btn-default" @click="editItem(item)">Edit</button>
+                            <button class="btn btn-sm btn-danger" @click="deleteItem(item.id, index)">Delete</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
+                <vue-pagination
+                        :items="this.filteredItems"
+                        :per_page="per_page"
+                ></vue-pagination>
             </div>
         </div>
     </div><!--/.col-->
 
 </template>
 <script>
-
-    /* eslint-disable quotes,curly */
-    export default{
-      data () {
-        return {
-          search: '',
-          apiService: null,
-          m_item: "orxan"
-        }
+  import VuePagination from './VuePagination.vue'
+  /* eslint-disable quotes,curly */
+  export default {
+    data () {
+      return {
+        search: '',
+        page: 1,
+        m_item: 'orxan'
+      }
+    },
+    computed: {
+      filteredItems () {
+        return this.api_response.filter(item => {
+          for (var value in item) {
+            if (!item.hasOwnProperty(value)) continue
+            if (String(item[value]).toLowerCase().match(this.search.toLowerCase())) {
+              return item[value]
+            }
+          }
+        })
+      }
+    },
+    methods: {
+      deleteItem (id, index) {
+        // -- Call deleteItem method from parent component
+        this.$parent.$emit('deleteItem', id, index)
       },
-      computed: {
-        filteredItems () {
-          return this.api_response.filter(item => {
-            if (item.fullname.toLowerCase().match(this.search.toLowerCase()) || item.email.toLowerCase().match(this.search.toLowerCase()))
-              return item
-          })
-        },
-        apiService () {
-          return this.api_service
-        }
+      editItem (item) {
+        // -- Call updateItem method from parent component
+        this.$parent.$emit('updateItem', item)
       },
-      methods: {
-        deleteItem (id, index) {
-          // -- Call deleteItem method from parent component
-          this.$parent.$emit('deleteItem', id, index)
-        },
-        editItem (items) {
-          // -- Call updateItem method from parent component
-          this.$parent.$emit('updateItem', items)
-        }
+      // -- this methods return the n number of items according to current page which is active on pagination
+      getItems (currentPage) {
+        this.page = currentPage
+        let start // display from start
+        let end // display until the end
+        start = currentPage * this.per_page - this.per_page
+        end = currentPage * this.per_page
+        return this.filteredItems.slice(start, end)
       },
-      props: {
-        columns: {
-          type: Array,
-          required: false
-        },
-        fields: {
-          type: Array,
-          required: true
-        },
-        api_response: {
-          type: Array,
-          required: true
-        },
-        api_service: {
-          type: Object,
-          required: true
-        }
+      // -- this methods return the n number of items according to current page which is active on pagination
+      show (id) {
+        this.$parent.$emit('show', id)
+      }
+    },
+    created () {
+      this.$on('getItems', this.getItems)
+    },
+    components: {
+      VuePagination
+    },
+    props: {
+      columns: {
+        type: Array,
+        required: false
+      },
+      detail_column: {
+        type: String,
+        required: false
+      },
+      objects: {
+        type: Array,
+        required: false
+      },
+      fields: {
+        type: Array,
+        required: true
+      },
+      api_response: {
+        type: Array,
+        required: true
+      },
+      per_page: {
+        type: Number,
+        required: true
+      },
+      image_attr: {
+        type: String,
+        required: false
       }
     }
+  }
 </script>
 <style lang="scss">
     [v-cloak] .v-cloak--hidden {
@@ -117,5 +156,16 @@
 
     .float_right {
         float: right;
+    }
+
+    .link {
+        cursor: pointer;
+        size: 22px;
+        color: #00aced;
+    }
+
+    .link:hover {
+        color: #00b3ee;
+        font-weight: bold;
     }
 </style>

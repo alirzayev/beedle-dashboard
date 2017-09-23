@@ -26,7 +26,7 @@
 
             <dropdown size="nav" class="nav-item">
         <span slot="button">
-          <img :src="user.cover_url" class="img-avatar" alt="admin@bootstrapmaster.com">
+          <img :src="user.cover_url" class="img-avatar avatar" :alt=" user.email ">
           <span v-if="user" class="d-md-down-none">{{ user.fullname }}</span>
         </span>
                 <div slot="dropdown-menu" class="dropdown-menu dropdown-menu-right">
@@ -35,8 +35,6 @@
 
                     <a class="dropdown-item" href="#"><i class="fa fa-envelope-o"></i> Messages<span
                             class="badge badge-success">42</span></a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-shield"></i> Discussions</a>
-
                     <div class="dropdown-header text-center"><strong>Settings</strong></div>
 
                     <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>

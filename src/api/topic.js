@@ -2,27 +2,29 @@ import Vue from 'vue'
 
 export default {
 
-  brands () {
-
-    return Vue.http.get('api/admin/brands')
+  topics () {
+    return Vue.http.get('api/admin/topics')
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
-
+  show (id) {
+    return Vue.http.get('api/admin/topics/' + id)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
   create (data) {
-
-    return Vue.http.post('api/admin/brands', data)
+    return Vue.http.post('api/admin/topics', data)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
 
   delete (id) {
-    return Vue.http.delete('api/admin/brands/' + id)
+    return Vue.http.delete('api/admin/topics/' + id)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
   update (id, data) {
-    return Vue.http.post('api/admin/brands/' + id + '/update', data)
+    return Vue.http.put('api/admin/topics/' + id, data)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   }

@@ -8,19 +8,20 @@ import store from './store'
 import VueResource from 'vue-resource'
 import VueTable from './components/VueTable.vue'
 import { default as swal } from 'sweetalert2'
+import vSelect from 'vue-multiselect'
 
 Vue.use(Vuex)
 Vue.use(VueResource)
 Vue.use(swal)
 
 Vue.component('vue-table', VueTable)
+Vue.component('multiselect', vSelect)
 
 Vue.http.options.root = 'http://localhost:8000'
 Vue.http.options.emulateJSON = true
 Vue.http.interceptors.push((request, next) => {
   request.headers.set('Authorization', 'Bearer ' + localStorage.getItem('token'))
   request.headers.set('Accept', 'application/json')
-
   next(function (response) {
     // modify response
     if (response.body.error === true) {

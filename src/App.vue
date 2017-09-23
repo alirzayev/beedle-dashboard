@@ -11,4 +11,5 @@
     @import '../static/css/font-awesome.css';
     @import '../static/css/simple-line-icons.css';
     @import '../static/css/style.css';
+    @import '../static/css/vue-multiselect.min.css';
 </style>

@@ -43,7 +43,6 @@
     methods: {
       login () {
         const data = {
-
           username: this.username,
           password: this.password,
           client_id: '2',

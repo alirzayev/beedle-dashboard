@@ -48,7 +48,7 @@
 <script>
   import modal from 'vue-strap/src/Modal'
   import EditModal from './modals/Edit.vue'
-  import userService from '../../api/user'
+  import brandService from '../../api/brand'
   import { default as swal } from 'sweetalert2'
 
   export default {
@@ -59,18 +59,16 @@
         userData: {
           'fullname': null,
           'email': null,
-          'password': null,
-          'created_at': Date.now()  // this item is not required! It is just about design!
-                                    // it is fake item will display immediately when we add new user.
+          'password': null
         },
-        columns: ['Name', 'Email', 'Created At'],
-        fields: ['fullname', 'email', 'created_at'],
         image_attr: 'cover_url',
+        columns: ['Name', 'Model num'],
+        fields: ['name', 'models_count'],
         response: [],
         formData: new FormData(),
         editedItem: {},
         pagination: {
-          'per_page': 5
+          'per_page': 10
         }
       }
     },
@@ -84,7 +82,7 @@
         this.formData.append('email', this.userData.email)
         this.formData.append('password', this.userData.password)
 
-        userService.create(this.formData)
+        brandService.create(this.formData)
           .then((response) => {
             console.log('new user created', response.body)
 
@@ -108,21 +106,21 @@
         }
         this.formData.append('cover', files[0])
       },
-      updateUser (item) {
+      updateItem (item) {
         this.editModal = true
         this.editedItem = item
       },
-      deleteUser (id, index) {
+      deleteItem (id, index) {
         swal({
           title: 'Are you sure?',
-          text: "You won't be able to revert this!",
+          text: 'You won\'t be able to revert this!',
           type: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
           confirmButtonText: 'Yes, delete it!'
         }).then(() => {
-          return userService.delete(id)
+          return brandService.delete(id)
             .then((response) => {
               swal(
                 'Deleted!',
@@ -134,20 +132,17 @@
               this.response.splice(index, 1)
             })
         })
-      },
-      getApi () {
-        return userService
       }
     },
     created () {
-      userService.users()
+      brandService.brands()
         .then((response, error) => {
-          console.log('users', response.body.users)
-          this.response = response.body.users
+          console.log('users', response.body.brands)
+          this.response = response.body.brands
         })
       // Make event for child component (VueTable)
-      this.$on('updateItem', this.updateUser)
-      this.$on('deleteItem', this.deleteUser)
+      this.$on('updateItem', this.updateItem)
+      this.$on('deleteItem', this.deleteItem)
     }
   }
 </script>

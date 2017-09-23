@@ -7,11 +7,6 @@
     <exe-path>/usr/local/bin/bower</exe-path>
     <config-path />
   </component>
-  <component name="PhpUnit">
-    <phpunit_settings>
-      <PhpUnitSettings custom_loader_path="/usr/local/Cellar/php54/5.4.45_3/bin/php-cgi" phpunit_phar_path="" />
-    </phpunit_settings>
-  </component>
   <component name="masterDetails">
     <states>
       <state key="ScopeChooserConfigurable.UI">

@@ -6,10 +6,13 @@ import Login from '@/views/auth/Login'
 import MainLayout from '@/containers/Full'
 import Dashboard from '@/views/Dashboard'
 import Users from '@/views/users/Index'
-import Brands from '@/views/brands/Index'
+import Brands from '@/views/brandss/Index'
 import CreateBrand from '../views/brands/Create'
+import BrandList from '../views/brands/List.vue'
 import Models from '../views/models/Index.vue'
 import CreateModel from '../views/models/Create'
+import Topics from '../views/topics/Index.vue'
+import Comments from '../views/comments/Index.vue'
 
 Vue.use(Router)
 
@@ -41,6 +44,25 @@ export default new Router({
           component: Users
         },
         {
+          path: 'topics',
+          name: 'Topics',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '/',
+              name: 'Topics',
+              component: Topics
+            },
+            {
+              path: ':id/comments',
+              name: 'Comments',
+              component: Comments
+            }
+          ]
+        },
+        {
           path: 'brands',
           redirect: '/brands',
           name: 'Brands',
@@ -56,6 +78,11 @@ export default new Router({
               path: 'create',
               name: 'Add Brand',
               component: CreateBrand
+            },
+            {
+              path: 'list',
+              name: 'User List',
+              component: BrandList
             },
             {
               path: ':id/models',
