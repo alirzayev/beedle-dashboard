@@ -3,7 +3,7 @@
         <modal title="aaaa" class="modal-primary" v-model="MyModal" @cancel="closeModal" @ok="saveItem"
                effect="fade/zoom">
             <div slot="modal-header" class="modal-header">
-                <h4 class="modal-title">Add New Topic</h4>
+                <h4 class="modal-title">Add New Model</h4>
             </div>
             <div class="form-group">
                 <label for="title">Title</label>
@@ -20,7 +20,7 @@
 
 <script>
   import modal from 'vue-strap/src/Modal'
-  import brandServices from '../../../api/brand'
+  import modelServices from '../../../api/model'
   import { default as swal } from 'sweetalert2'
 
   export default {
@@ -28,8 +28,7 @@
       return {
         value: null,
         options: [],
-        formData: new FormData(),
-        brandname: this.brandname
+        formData: new FormData()
       }
     },
     computed: {
@@ -43,7 +42,7 @@
     methods: {
       saveItem () {
         this.formData.append('name', this.data.name)
-        brandServices.update(this.data.id, this.formData)
+        modelServices.update(this.data.id, this.formData)
           .then((response) => {
             swal(
               'Good job!',
@@ -65,11 +64,6 @@
       closeModal () {
         this.$parent.editModal = false
       }
-    },
-    mounted () {
-      this.$store.dispatch('getBrands').then(() => {
-        this.options = this.$store.state.brands
-      })
     },
     props: {
       edit_modal: {

@@ -9,9 +9,19 @@ export default {
       .catch((error) => Promise.reject(error))
   },
 
-  create(data) {
+  create (data) {
+    return Vue.http.post('api/admin/models', data)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
 
-    return Vue.http.post('api/admin/models/', data)
+  delete (id) {
+    return Vue.http.delete('api/admin/models/' + id)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
+  update (id, data) {
+    return Vue.http.post('api/admin/models/' + id + '/update', data)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   }

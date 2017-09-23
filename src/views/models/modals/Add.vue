@@ -3,11 +3,11 @@
         <modal title="aaaa" class="modal-primary" v-model="MyModal" @cancel="closeModal" @ok="saveItem"
                effect="fade/zoom">
             <div slot="modal-header" class="modal-header">
-                <h4 class="modal-title">Add New Topic</h4>
+                <h4 class="modal-title">Add New Model</h4>
             </div>
             <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" id="title" v-model="data.name" class="form-control"
+                <label for="brand">Brand</label>
+                <input type="text" id="brand" v-model="modelname" class="form-control"
                        placeholder="Enter the title">
             </div>
             <div class="form-group">
@@ -19,9 +19,8 @@
 </template>
 
 <script>
+  /* eslint-disable quotes */
   import modal from 'vue-strap/src/Modal'
-  import brandServices from '../../../api/brand'
-  import { default as swal } from 'sweetalert2'
 
   export default {
     data () {
@@ -29,32 +28,18 @@
         value: null,
         options: [],
         formData: new FormData(),
-        brandname: this.brandname
+        modelname: this.modelname
       }
     },
     computed: {
       MyModal () {
-        return this.edit_modal
+        return this.add_modal
       }
     },
     components: {
       modal
     },
     methods: {
-      saveItem () {
-        this.formData.append('name', this.data.name)
-        brandServices.update(this.data.id, this.formData)
-          .then((response) => {
-            swal(
-              'Good job!',
-              response.body.message,
-              'success'
-            )
-            this.$parent.editModal = false
-            console.log('brand updated', response.body)
-            console.log('params', this.formData.cover)
-          })
-      },
       onFileChange (ele) {
         let files = ele.target.files || ele.dataTransfer.files
         if (!files.length) {
@@ -62,8 +47,13 @@
         }
         this.formData.append('cover', files[0])
       },
+      saveItem () {
+        this.formData.append('name', this.modelname)
+        this.formData.append('brand_id', this.$route.params.id)
+        this.$parent.$emit('addItem', this.formData)
+      },
       closeModal () {
-        this.$parent.editModal = false
+        this.$parent.addModal = false
       }
     },
     mounted () {
@@ -72,12 +62,8 @@
       })
     },
     props: {
-      edit_modal: {
+      add_modal: {
         type: Boolean,
-        required: true
-      },
-      data: {
-        type: Object,
         required: true
       }
     }

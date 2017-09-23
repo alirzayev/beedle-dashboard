@@ -6,21 +6,10 @@
                     <router-link :to="'/dashboard'" class="nav-link"><i class="icon-speedometer"></i> Dashboard <span
                             class="badge badge-info">NEW</span></router-link>
                 </li>
-                <router-link tag="li" class="nav-item nav-dropdown" :to="{ path: '/icons'}" disabled>
-                    <div class="nav-link nav-dropdown-toggle" @click="handleClick"><i class="fa fa-car"></i> Cars</div>
-                    <ul class="nav-dropdown-items">
-                        <li class="nav-item">
-                            <router-link :to="'/brands'" class="nav-link" exact><i class="icon-star"></i>
-                                Brands
-                            </router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link :to="'/models'" class="nav-link" exact><i
-                                    class="icon-star"></i> Models
-                            </router-link>
-                        </li>
-                    </ul>
-                </router-link>
+                <li class="nav-item">
+                    <router-link :to="'/brands'" class="nav-link" exact><i class="fa fa-car"></i> Cars
+                    </router-link>
+                </li>
                 <li class="nav-item">
                     <router-link :to="'/topics'" class="nav-link" exact><i class="icon-bubble"></i> Topics
                     </router-link>
