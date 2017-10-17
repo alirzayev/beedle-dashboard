@@ -36,3 +36,14 @@ export function getBrands ({commit}) {
     })
 }
 
+export function getFlags ({commit}) {
+  return topicServices.flags()
+    .then((response) => {
+      let rTopics = response.body.topics
+      console.log('reported topics', rTopics)
+      commit(types.INIT_REPORTED_TOPICS, {
+        rTopics
+      })
+    })
+}
+

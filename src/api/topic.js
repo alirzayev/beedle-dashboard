@@ -27,5 +27,25 @@ export default {
     return Vue.http.put('api/admin/topics/' + id, data)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
-  }
+  },
+  activate (id) {
+    return Vue.http.post('api/admin/topics/' + id + '/activate')
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
+  deactivate (id) {
+    return Vue.http.post('api/admin/topics/' + id + '/deactivate')
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
+  flags () {
+    return Vue.http.get('api/report/topics')
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
+  ignoreReport (id) {
+    return Vue.http.delete('api/report/topics/' + id)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error))
+  },
 }

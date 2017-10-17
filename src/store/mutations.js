@@ -10,6 +10,9 @@ export default {
   },
   [types.INIT_BRANDS] (state, {brands}) {
     Vue.set(state, 'brands', brands)
+  },
+  [types.INIT_REPORTED_TOPICS] (state, {rTopics}) {
+    Vue.set(state, 'reportedTopics', rTopics)
   }
 }
 

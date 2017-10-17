@@ -13,7 +13,8 @@ Vue.use(Vuex)
 const state = {
   topics: [],
   topic: {},
-  brands: []
+  brands: [],
+  reportedTopics: []
 }
 
 export default new Vuex.Store({

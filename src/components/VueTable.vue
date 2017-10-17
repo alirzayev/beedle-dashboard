@@ -15,16 +15,11 @@
             <div class="card-block">
                 <table class="table table-striped">
                     <thead>
-                    <tr v-if="columns">
+                    <tr>
                         <th> No </th>
                         <th v-if="image_attr"> Cover </th>
-                        <th v-for="column in columns" v-text="column"></th>
-                        <th> Actions </th>
-                    </tr>
-                    <tr v-else>
-                        <th> No </th>
-                        <th v-if="image_attr"> Cover </th>
-                        <th v-for="field in fields" v-text="field"></th>
+                        <th v-if="columns" v-for="column in columns" v-text="column"></th>
+                        <th v-else v-for="field in fields" v-text="field"></th>
                         <th> Actions </th>
                     </tr>
                     </thead>
@@ -37,21 +32,29 @@
                                 <img :src="item[image_attr]" class="img-avatar">
                             </div>
                         </td>
+                        <!-- This column is displaying the objects of item -->
+                        <td v-if="objects" v-for="object_field in object_fields">
+                            <span v-if="item.hasOwnProperty(object)" v-for="object in objects"
+                                  v-text="item[object][object_field]">
+                            </span>
+                        </td>
                         <td v-if="item.hasOwnProperty(field)" v-for="field in fields">
                             <span v-if="detail_column===field" class="link" @click="show(item.id)" v-text="item[field]">
+                            </span>
+                            <span v-else-if="action_column===field" v-text="getDetails(item.id).column_status">
                             </span>
                             <span v-else v-text="item[field]">
                             </span>
                         </td>
-                        <!-- This column is displaying the objects of item -->
-                        <td v-for="object in objects">
-                            <span v-if="item[object]" v-for="(value, key) in fields">
-                                {{ item[object][value] }}
-                            </span>
-                        </td>
                         <td>
-                            <button class="btn btn-sm btn-default" @click="editItem(item)">Edit</button>
+                            <button v-if="editable==true" class="btn btn-sm btn-default" @click="editItem(item)">Edit
+                            </button>
                             <button class="btn btn-sm btn-danger" @click="deleteItem(item.id, index)">Delete</button>
+                            <button v-if="action_column" class="btn btn-sm"
+                                    :class="getDetails(item.id).class"
+                                    @click="doAction(item.id, item[action_column])"
+                                    v-text="getDetails(item.id).btn_title">
+                            </button>
                         </td>
                     </tr>
                     </tbody>
@@ -72,8 +75,7 @@
     data () {
       return {
         search: '',
-        page: 1,
-        m_item: 'orxan'
+        page: 1
       }
     },
     computed: {
@@ -106,9 +108,14 @@
         end = currentPage * this.per_page
         return this.filteredItems.slice(start, end)
       },
-      // -- this methods return the n number of items according to current page which is active on pagination
       show (id) {
         this.$parent.$emit('show', id)
+      },
+      doAction (id, status) {
+        this.$parent.$emit('action', id, status)
+      },
+      getDetails (id) {
+        return this.$parent.getActionDetails(id)
       }
     },
     created () {
@@ -134,6 +141,10 @@
         type: Array,
         required: true
       },
+      object_fields: {
+        type: Array,
+        required: false
+      },
       api_response: {
         type: Array,
         required: true
@@ -144,6 +155,15 @@
       },
       image_attr: {
         type: String,
+        required: false
+      },
+      action_column: {
+        type: String,
+        required: false
+      },
+      editable: {
+        default: true,
+        type: Boolean,
         required: false
       }
     }

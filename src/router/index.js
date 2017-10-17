@@ -9,6 +9,7 @@ import Users from '../views/users/Index'
 import Brands from '../views/brands/Index'
 import Models from '../views/models/Index.vue'
 import Topics from '../views/topics/Index.vue'
+import ReportedTopics from '../views/topics/reports.vue'
 import Comments from '../views/comments/Index.vue'
 
 Vue.use(Router)
@@ -56,6 +57,11 @@ export default new Router({
               path: ':id/comments',
               name: 'Comments',
               component: Comments
+            },
+            {
+              path: 'reported',
+              name: 'Reported Topics',
+              component: ReportedTopics
             }
           ]
         },

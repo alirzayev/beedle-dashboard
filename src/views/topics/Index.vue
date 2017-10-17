@@ -14,7 +14,7 @@
         <vue-table
                 :columns="columns"
                 :fields="fields"
-                :objects="objects"
+                :action_column="action_column"
                 :detail_column="detail_column"
                 :image_attr="image_attr"
                 :api_response="response"
@@ -29,17 +29,19 @@
   import AddModal from './modals/Add.vue'
   import topicServices from '../../api/topic'
   import { default as swal } from 'sweetalert2'
+  import find from 'lodash/find'
 
   export default {
     data () {
       return {
         addModal: false,
         editModal: false,
-        columns: ['Title', 'Content', 'Likes', 'Comments', 'Model'],
+        columns: ['Title', 'Content', 'Status', 'Likes', 'Comments'],
         detail_column: 'comments_count',
-        fields: ['title', 'content', 'likes_count', 'comments_count', 'name'],
-        objects: ['model'],
+        action_column: 'is_active',
+        fields: ['title', 'content', 'is_active', 'likes_count', 'comments_count'],
         image_attr: 'cover_url',
+        action: {},
         response: [],
         formData: new FormData(),
         editedItem: {},
@@ -76,6 +78,11 @@
         this.editModal = true
         this.editedItem = item
       },
+      refresh () {
+        this.$store.dispatch('getTopics').then(() => {
+          this.response = this.$store.state.topics
+        })
+      },
       deleteTopic (id, index) {
         swal({
           title: 'Are you sure?',
@@ -101,17 +108,51 @@
       },
       topicComments (id) {
         this.$router.push('topics/' + id + '/comments')
+      },
+      changeStatus (id, status) {
+        swal({
+          title: status === 1 ? 'Deactivate Topic' : 'Activate Topic',
+          text: 'Are you sure to do this?',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes'
+        }).then(() => {
+          if (status === 1) {
+            return topicServices.deactivate(id).then(() => {
+              this.refresh()
+            })
+          } else {
+            return topicServices.activate(id).then(() => {
+              this.refresh()
+            })
+          }
+        })
+      },
+      getActionDetails (id) {
+        let topic = find(this.response, t => t.id === parseInt(id))
+        console.log('deactive topic', topic)
+        if (topic.is_active === 1) {
+          this.action.btn_title = 'Deactivate'
+          this.action.class = 'btn-warning'
+          this.action.column_status = 'Active'
+        } else {
+          this.action.btn_title = 'Activate'
+          this.action.class = 'btn-info'
+          this.action.column_status = 'Deactive'
+        }
+        return this.action
       }
     },
     created () {
-      this.$store.dispatch('getTopics').then(() => {
-        this.response = this.$store.state.topics
-      })
+      this.refresh()
       // Make event for child component (VueTable)
       this.$on('addItem', this.createItem)
       this.$on('updateItem', this.updateUser)
       this.$on('deleteItem', this.deleteTopic)
       this.$on('show', this.topicComments)
+      this.$on('action', this.changeStatus)
     }
   }
 </script>

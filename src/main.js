@@ -17,6 +17,7 @@ Vue.use(swal)
 Vue.component('vue-table', VueTable)
 Vue.component('multiselect', vSelect)
 
+// Vue.http.options.root = 'http://beedle.caspiansoft.com/'
 Vue.http.options.root = 'http://localhost:8000'
 Vue.http.options.emulateJSON = true
 Vue.http.interceptors.push((request, next) => {
