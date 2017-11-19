@@ -20,6 +20,10 @@
                         <li class="nav-item">
                             <router-link :to="'/topics/reported'" class="nav-link" exact>Reported Topics</router-link>
                         </li>
+                        <li class="nav-item">
+                            <router-link :to="'/topics/comments/reported'" class="nav-link" exact>Reported Comments
+                            </router-link>
+                        </li>
                     </ul>
                 </router-link>
                 <router-link tag="li" class="nav-item nav-dropdown" :to="{ path: '/topics'}" disabled>
@@ -30,7 +34,7 @@
                             <router-link :to="'/users'" class="nav-link" exact>Users</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="'/topics/reported'" class="nav-link" exact>Reported Users</router-link>
+                            <router-link :to="'/users/reported'" class="nav-link" exact>Reported Users</router-link>
                         </li>
                     </ul>
                 </router-link>
@@ -38,7 +42,7 @@
                     Settings
                 </li>
                 <li class="nav-item">
-                    <router-link :to="'/charts'" class="nav-link" exact><i class="icon-settings"></i> Settings
+                    <router-link :to="'/settings'" class="nav-link" exact><i class="icon-settings"></i> Settings
                     </router-link>
                 </li>
             </ul>
