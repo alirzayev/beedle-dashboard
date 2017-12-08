@@ -14,7 +14,9 @@ const state = {
   topics: [],
   topic: {},
   brands: [],
-  reportedTopics: []
+  reportedTopics: [],
+  reportedUsers: [],
+  reportedComments: []
 }
 
 export default new Vuex.Store({

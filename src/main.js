@@ -18,7 +18,7 @@ Vue.component('vue-table', VueTable)
 Vue.component('multiselect', vSelect)
 
 // Vue.http.options.root = 'http://beedle.caspiansoft.com/'
-Vue.http.options.root = 'http://localhost:8000'
+Vue.http.options.root = 'http://188.226.148.17'
 Vue.http.options.emulateJSON = true
 Vue.http.interceptors.push((request, next) => {
   request.headers.set('Authorization', 'Bearer ' + localStorage.getItem('token'))

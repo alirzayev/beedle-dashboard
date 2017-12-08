@@ -41,8 +41,6 @@
                         <td v-if="item.hasOwnProperty(field)" v-for="field in fields">
                             <span v-if="detail_column===field" class="link" @click="show(item.id)" v-text="item[field]">
                             </span>
-                            <span v-else-if="action_column===field" v-text="getDetails(item.id).column_status">
-                            </span>
                             <span v-else v-text="item[field]">
                             </span>
                         </td>

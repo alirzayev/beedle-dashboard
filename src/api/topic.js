@@ -39,12 +39,12 @@ export default {
       .catch((error) => Promise.reject(error))
   },
   flags () {
-    return Vue.http.get('api/report/topics')
+    return Vue.http.get('api/admin/report/topics')
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },
   ignoreReport (id) {
-    return Vue.http.delete('api/report/topics/' + id)
+    return Vue.http.delete('api/admin/report/topics/' + id)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error))
   },

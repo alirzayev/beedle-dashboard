@@ -110,8 +110,9 @@
         this.$router.push('topics/' + id + '/comments')
       },
       changeStatus (id, status) {
+        let topic = find(this.response, t => t.id === parseInt(id))
         swal({
-          title: status === 1 ? 'Deactivate Topic' : 'Activate Topic',
+          title: topic.is_active === '1' ? 'Deactivate Topic' : 'Activate Topic',
           text: 'Are you sure to do this?',
           type: 'warning',
           showCancelButton: true,
@@ -119,12 +120,14 @@
           cancelButtonColor: '#d33',
           confirmButtonText: 'Yes'
         }).then(() => {
-          if (status === 1) {
+          if (topic.is_active === 1) {
             return topicServices.deactivate(id).then(() => {
+              console.log('deactive topic', topic)
               this.refresh()
             })
           } else {
             return topicServices.activate(id).then(() => {
+              console.log('active topic', topic)
               this.refresh()
             })
           }
@@ -132,7 +135,7 @@
       },
       getActionDetails (id) {
         let topic = find(this.response, t => t.id === parseInt(id))
-        console.log('deactive topic', topic)
+        console.log('actioned topic', topic)
         if (topic.is_active === 1) {
           this.action.btn_title = 'Deactivate'
           this.action.class = 'btn-warning'
